@@ -1,0 +1,5 @@
+# Use backpackapp image with working Anchor 0.30.1 CLI
+# CLI 0.30.1 can build programs using anchor-lang 0.29.0
+FROM backpackapp/build:v0.30.1
+WORKDIR /workspace
+CMD ["anchor", "build"]

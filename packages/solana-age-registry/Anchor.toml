@@ -1,0 +1,23 @@
+[workspace]
+name = "age_registry"
+types = "target/types"
+
+[features]
+seeds = false
+skip-lint = false
+
+[programs.devnet]
+age_registry = "AgeVwjVjNpRYkk1TzkLPG7S1bvMoa4J3bwuVbs161k3q"
+
+[programs.mainnet]
+age_registry = "AgeVwjVjNpRYkk1TzkLPG7S1bvMoa4J3bwuVbs161k3q"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Devnet"
+wallet = "../../keys/Ch3FHmuLmrL1FeHsoibsCYsFMtY67zbjkZK13VdkZtHC.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

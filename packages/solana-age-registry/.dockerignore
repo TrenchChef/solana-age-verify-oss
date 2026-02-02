@@ -1,0 +1,21 @@
+# Sensitive Assets
+
+!package.json
+!tsconfig.json
+!Anchor.toml
+!**/*idl*.json
+!**/*.idl.json
+.env*
+program-keypair.json
+id.json
+
+# Build Artifacts
+**/target/
+**/node_modules/
+
+# Miscellaneous
+.DS_Store
+.git/
+.dockerignore
+docker/
+test-ledger/

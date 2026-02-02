@@ -1,0 +1,7 @@
+packages:
+  - packages/*
+  - apps/*
+  - mcp-agents
+
+onlyBuiltDependencies:
+  - esbuild

@@ -1,0 +1,46 @@
+# Sensitive Assets
+
+!package.json
+!pnpm-lock.yaml
+!tsconfig.json
+!Anchor.toml
+!**/*idl*.json
+!**/*.idl.json
+.env*
+apps/web/.env.devnet
+apps/web/.env.mainnet
+**/*.key
+**/*.pem
+SECRET_VAULT.md
+program-keypair.json
+id.json
+
+# Build Artifacts
+**/target/
+**/dist/
+**/build/
+**/.next/
+**/out/
+**/node_modules/
+pnpm-debug.log*
+
+# Internal / Brain Data (Docker ignored)
+.gemini/
+.agent/
+brain/
+mcp-agents/
+.cursor/
+docs/archive/
+
+# Solana Data
+test-ledger/
+
+# Miscellaneous
+.DS_Store
+.git/
+.gitignore
+.dockerignore
+Dockerfile*
+docker-compose.yml
+build-docker.sh
+generate_shims.sh

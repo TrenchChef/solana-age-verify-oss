@@ -1,0 +1,61 @@
+{
+  "name": "solana-age-verify-monorepo",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.26.2",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TrenchChef/solana-age-verify-sdk"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "verify": "./scripts/verify-local.sh"
+  },
+  "devDependencies": {
+    "@solana/web3.js": "^1.98.4",
+    "@solana/kit": "^2.3.0",
+    "@solana/signers": "^2.3.0",
+    "sas-lib": "^1.0.10",
+    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/parser": "^8.53.1",
+    "dotenv": "^16.6.1",
+    "eslint": "^8.57.1",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@stellar/stellar-sdk",
+      "bigint-buffer",
+      "blake-hash",
+      "bufferutil",
+      "core-js",
+      "esbuild",
+      "protobufjs",
+      "tiny-secp256k1",
+      "usb",
+      "utf-8-validate",
+      "yarn"
+    ],
+    "overrides": {
+      "h3": ">=1.15.5",
+      "lodash": ">=4.17.23",
+      "lodash-es": ">=4.17.23",
+      "tar": ">=7.5.7",
+      "path-to-regexp": ">=6.3.0",
+      "elliptic": ">=6.6.1",
+      "micromatch": ">=4.0.8",
+      "undici": ">=6.23.0",
+      "diff": ">=5.2.2",
+      "braces": ">=3.0.3",
+      "esbuild": ">=0.25.0"
+    }
+  }
+}

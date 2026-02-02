@@ -1,0 +1,40 @@
+# Security & Private Keys
+**/*.json
+!package.json
+!tsconfig.json
+!Anchor.toml
+!**/*idl*.json
+!**/*.idl.json
+!packages/age-verify-sdk/public/models/m_*.json
+.env*
+apps/web/.env.devnet
+apps/web/.env.mainnet
+**/*.key
+**/*.pem
+SECRET_VAULT.md
+program-keypair.json
+id.json
+
+# Internal / Brain Data
+.gemini/
+.agent/
+brain/
+docs/archive/
+docs/IMMEDIATE_ACTION_PLAN.md
+
+# Build & Tooling
+target/
+test-ledger/
+Dockerfile*
+docker-compose.yml
+build-docker.sh
+generate_shims.sh
+
+# MCP agents + Cursor rules (NPM ignored; not published)
+mcp-agents/
+.cursor/
+
+# Specific files to exclude
+BIOMETRIC_STACK.md
+keys/
+docs/PARTNER_OUTREACH_TEMPLATES.md

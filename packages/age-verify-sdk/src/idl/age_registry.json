@@ -1,0 +1,276 @@
+{
+  "version": "0.2.1",
+  "name": "age_registry",
+  "instructions": [
+    {
+      "name": "createVerification",
+      "docs": [
+        "Create a verification record for a user."
+      ],
+      "accounts": [
+        {
+          "name": "verificationRecord",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "The verification record PDA, keyed by authority's public key."
+          ]
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true,
+          "docs": [
+            "The user being verified (wallet owner)."
+          ]
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "The account paying for transaction fees and rent."
+          ]
+        },
+        {
+          "name": "protocolTreasury",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Protocol treasury receiving the protocol fee."
+          ]
+        },
+        {
+          "name": "appTreasury",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "App treasury receiving optional app fee."
+          ]
+        },
+        {
+          "name": "gatekeeper",
+          "isMut": false,
+          "isSigner": true,
+          "docs": [
+            "Gatekeeper signer (platform key for authorization)."
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "facehash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "verifiedAt",
+          "type": "i64"
+        },
+        {
+          "name": "over18",
+          "type": "bool"
+        },
+        {
+          "name": "appFee",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "updateVerification",
+      "docs": [
+        "Update an existing verification record (re-verification after expiry)."
+      ],
+      "accounts": [
+        {
+          "name": "verificationRecord",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "The existing verification record PDA."
+          ]
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true,
+          "docs": [
+            "The user being verified (wallet owner)."
+          ]
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "The account paying for transaction fees."
+          ]
+        },
+        {
+          "name": "protocolTreasury",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Protocol treasury receiving the protocol fee."
+          ]
+        },
+        {
+          "name": "appTreasury",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "App treasury receiving optional app fee."
+          ]
+        },
+        {
+          "name": "gatekeeper",
+          "isMut": false,
+          "isSigner": true,
+          "docs": [
+            "Gatekeeper signer (platform key for authorization)."
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "facehash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "verifiedAt",
+          "type": "i64"
+        },
+        {
+          "name": "over18",
+          "type": "bool"
+        },
+        {
+          "name": "appFee",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "closeVerification",
+      "docs": [
+        "Close a verification record and return rent to payer."
+      ],
+      "accounts": [
+        {
+          "name": "verificationRecord",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "The verification record to close."
+          ]
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true,
+          "docs": [
+            "The record owner."
+          ]
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "Receives the rent."
+          ]
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "VerificationRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "facehash",
+            "docs": [
+              "SHA-256 hash of the face embedding + wallet + salt."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "userCode",
+            "docs": [
+              "5-character alphanumeric user code (only for over_18)."
+            ],
+            "type": "string"
+          },
+          {
+            "name": "over18",
+            "docs": [
+              "Whether the user is verified as 18+."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "verifiedAt",
+            "docs": [
+              "Unix timestamp when verification was performed."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "expiresAt",
+            "docs": [
+              "Unix timestamp when verification expires."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed."
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "VerificationStillValid",
+      "msg": "Verification is still valid."
+    },
+    {
+      "code": 6001,
+      "name": "TimestampOverflow",
+      "msg": "Timestamp overflow."
+    }
+  ]
+}

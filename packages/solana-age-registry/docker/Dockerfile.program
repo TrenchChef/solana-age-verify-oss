@@ -1,0 +1,8 @@
+# Rust 1.85 (edition2024) + Anchor 0.29.0 without --locked so deps (e.g. time) can update.
+FROM backpackapp/build:v0.30.1
+ARG RUST_VERSION=1.88.0
+ARG ANCHOR_TAG=v0.29.0
+RUN rustup toolchain install ${RUST_VERSION} && rustup default ${RUST_VERSION}
+RUN cargo install --git https://github.com/coral-xyz/anchor --tag "${ANCHOR_TAG}" anchor-cli
+WORKDIR /app
+CMD ["anchor", "build"]

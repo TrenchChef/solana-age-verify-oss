@@ -1,0 +1,46 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/age-verify-sdk/package.json'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build SDK
+        run: pnpm --filter solana-age-verify-sdk build
+
+      - name: Publish to NPM
+        run: |
+          cd packages/age-verify-sdk
+          # Only publish if this version doesn't exist yet
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ $(npm view solana-age-verify-sdk version) != "$VERSION" ]]; then
+            npm publish --tag beta --access public
+          else
+            echo "Version $VERSION already exists. Skipping publish."
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

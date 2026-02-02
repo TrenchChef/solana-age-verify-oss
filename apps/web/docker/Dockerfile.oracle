@@ -1,0 +1,30 @@
+# Dockerfile.oracle
+FROM node:20-slim
+
+WORKDIR /app
+
+# Install system dependencies for node-gyp and native modules if needed
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy root workspace configs
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Copy packages and apps needed for the oracle
+COPY packages/age-verify-sdk ./packages/age-verify-sdk
+COPY apps/web ./apps/web
+
+# Install pnpm and dependencies
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
+
+# Expose the oracle port
+EXPOSE 3001
+
+# Start the oracle service
+# Note: We assume a simplified runner here as the original is a Vercel function.
+# In production, we'd use a more robust Node.js server.
+WORKDIR /app/apps/web
+CMD ["pnpm", "run", "dev"]

@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  # Program Builder
+  # Usage: docker-compose run builder
+  builder:
+    build:
+      context: ./packages/solana-age-registry
+      dockerfile: docker/Dockerfile.program
+    volumes:
+      - .:/app
+    working_dir: /app/packages/solana-age-registry
+    command: /bin/bash -c "export PATH='/root/.cargo/bin:$$PATH' && anchor build"
+
+  # Oracle Service
+  oracle:
+    build:
+      context: .
+      dockerfile: apps/web/docker/Dockerfile.oracle
+    env_file: .env
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+    depends_on:
+      - builder # Build program first if needed

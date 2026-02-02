@@ -1,0 +1,14 @@
+# Soteria security scan image (separate from canonical build; does not change IMMUTABLES).
+# Uses same base as pinned build so toolchain matches; installs Soteria for local/CI scans.
+# Build: docker build -t age-registry-soteria -f docker/Dockerfile.soteria .
+# Run:  docker run --rm -v "$(pwd)/../..:/workspace" -w /workspace/packages/solana-age-registry age-registry-soteria
+
+FROM backpackapp/build:v0.28.0
+
+WORKDIR /workspace
+
+# Install Soteria (Solana program security analyzer). Match silas-x/soteria-action: curl -k, install to ./soteria-linux-develop/bin
+# If build fails: use .github/workflows/ci.yml Soteria job (runs in GitHub network) or run scan-docker.sh from a reachable network.
+RUN sh -c "$(curl -k -sSfL https://supercompiler.xyz/install)" && test -x soteria-linux-develop/bin/soteria
+ENV PATH="/workspace/soteria-linux-develop/bin:$PATH"
+CMD ["soteria", "-analyzeAll", "."]

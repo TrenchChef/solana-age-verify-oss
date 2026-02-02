@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ready-to-work gate
+        run: bash scripts/ready-to-work-gate.sh
+
+      # Path filter: run Anchor build only when program or Anchor config change.
+      - uses: dorny/paths-filter@v3
+        id: anchor-filter
+        with:
+          filters: |
+            anchor:
+              - 'packages/solana-age-registry/Anchor.toml'
+              - 'packages/solana-age-registry/programs/age_registry/**'
+
+      # IDL cache: key from program/Anchor sources so cache invalidates when they change.
+      - name: Restore Anchor IDL cache
+        uses: actions/cache/restore@v4
+        id: anchor-cache
+        with:
+          path: packages/solana-age-registry/target
+          key: anchor-idl-${{ runner.os }}-${{ hashFiles('packages/solana-age-registry/Anchor.toml', 'packages/solana-age-registry/programs/age_registry/**') }}
+          fail-on-cache-miss: false
+
+      # 1) Dockerized Anchor/IDL build — only when anchor paths changed or cache missed (so IDL exists for downstream).
+      - name: Build Anchor program (Docker)
+        if: steps.anchor-filter.outputs.anchor == 'true' || steps.anchor-cache.outputs.cache-hit != 'true'
+        run: |
+          docker build -t age-registry-builder -f packages/solana-age-registry/docker/Dockerfile.program packages/solana-age-registry
+          docker run --rm -v "$PWD:/app" -w /app/packages/solana-age-registry \
+            -e PATH="/root/.cargo/bin:$PATH" \
+            age-registry-builder \
+            /bin/bash -c 'export CARGO_TARGET_DIR=/tmp/anchor-target && mkdir -p /tmp/anchor-target && anchor build && mkdir -p target && cp -r /tmp/anchor-target/* target/'
+
+      - name: Save Anchor IDL cache
+        if: steps.anchor-filter.outputs.anchor == 'true' || steps.anchor-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: packages/solana-age-registry/target
+          key: anchor-idl-${{ runner.os }}-${{ hashFiles('packages/solana-age-registry/Anchor.toml', 'packages/solana-age-registry/programs/age_registry/**') }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - run: pnpm install
+
+      # 2) SDK build
+      - name: Build SDK
+        run: pnpm --filter solana-age-verify build
+
+      # 3) Web app / Oracle build
+      - name: Build Web app / Oracle
+        run: pnpm --filter @talkchain/web build
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - run: pnpm test
+
+  soteria:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: anchor-filter
+        with:
+          filters: |
+            anchor:
+              - 'packages/solana-age-registry/Anchor.toml'
+              - 'packages/solana-age-registry/programs/age_registry/**'
+              - 'packages/solana-age-registry/docker/**'
+              - 'packages/solana-age-registry/scan-docker.sh'
+              - '.github/workflows/ci.yml'
+      - name: Soteria security scan
+        if: steps.anchor-filter.outputs.anchor == 'true'
+        continue-on-error: true
+        uses: silas-x/soteria-action@main
+        with:
+          solana-version: "1.17.31"
+          run-mode: "-analyzeAll"
+          program-path: packages/solana-age-registry

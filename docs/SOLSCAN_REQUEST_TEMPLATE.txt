@@ -1,0 +1,12 @@
+Copy-paste this into Solscan Discord (https://discord.gg/VYdtu92DX3) support/integration channel.
+Attach apps/web/public/AgeVerify-Icon-512.png when posting.
+
+---
+
+**Program branding request**
+
+- **Program ID:** AgeVwjVjNpRYkk1TzkLPG7S1bvMoa4J3bwuVbs161k3q
+- **Project name:** AgeVerify
+- **Website:** https://ageverify.live
+- **Logo:** [attach AgeVerify-Icon-512.png]
+- **Proof of ownership:** I can sign a message with the program upgrade authority on request.

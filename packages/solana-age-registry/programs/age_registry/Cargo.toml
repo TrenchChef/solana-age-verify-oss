@@ -1,0 +1,30 @@
+[package]
+name = "age_registry"
+version = "0.2.1"
+description = "Created with Anchor"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "age_registry"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = { version = "0.29.0", features = ["init-if-needed"] }
+solana-program = "=1.17.31"
+solana-security-txt = "1.1.2"
+
+[profile.release]
+overflow-checks = false
+lto = "fat"
+codegen-units = 1
+strip = true
+opt-level = 3
+panic = "abort"

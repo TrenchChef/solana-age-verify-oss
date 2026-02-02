@@ -1,0 +1,231 @@
+{
+    "version": "0.2.1",
+    "name": "age_registry",
+    "instructions": [
+        {
+            "name": "createVerification",
+            "accounts": [
+                {
+                    "name": "verificationRecord",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": false,
+                    "isSigner": true
+                },
+                {
+                    "name": "payer",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "protocolTreasury",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "appTreasury",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "gatekeeper",
+                    "isMut": false,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "facehash",
+                    "type": {
+                        "array": [
+                            "u8",
+                            32
+                        ]
+                    }
+                },
+                {
+                    "name": "verifiedAt",
+                    "type": "i64"
+                },
+                {
+                    "name": "over18",
+                    "type": "bool"
+                },
+                {
+                    "name": "appFee",
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "updateVerification",
+            "accounts": [
+                {
+                    "name": "verificationRecord",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": false,
+                    "isSigner": true
+                },
+                {
+                    "name": "payer",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "protocolTreasury",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "appTreasury",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "gatekeeper",
+                    "isMut": false,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "facehash",
+                    "type": {
+                        "array": [
+                            "u8",
+                            32
+                        ]
+                    }
+                },
+                {
+                    "name": "verifiedAt",
+                    "type": "i64"
+                },
+                {
+                    "name": "over18",
+                    "type": "bool"
+                },
+                {
+                    "name": "appFee",
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "closeVerification",
+            "accounts": [
+                {
+                    "name": "verificationRecord",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": false,
+                    "isSigner": true
+                },
+                {
+                    "name": "payer",
+                    "isMut": true,
+                    "isSigner": true
+                }
+            ],
+            "args": []
+        }
+    ],
+    "types": [
+        {
+            "name": "VerificationRecord",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "facehash",
+                        "type": {
+                            "array": [
+                                "u8",
+                                32
+                            ]
+                        }
+                    },
+                    {
+                        "name": "userCode",
+                        "type": "string"
+                    },
+                    {
+                        "name": "over18",
+                        "type": "bool"
+                    },
+                    {
+                        "name": "verifiedAt",
+                        "type": "i64"
+                    },
+                    {
+                        "name": "expiresAt",
+                        "type": "i64"
+                    },
+                    {
+                        "name": "bump",
+                        "type": "u8"
+                    }
+                ]
+            }
+        }
+    ],
+    "events": [
+        {
+            "name": "VerificationEvent",
+            "fields": [
+                {
+                    "name": "authority",
+                    "type": "publicKey",
+                    "index": false
+                },
+                {
+                    "name": "userCode",
+                    "type": "string",
+                    "index": false
+                },
+                {
+                    "name": "verifiedAt",
+                    "type": "i64",
+                    "index": false
+                },
+                {
+                    "name": "expiresAt",
+                    "type": "i64",
+                    "index": false
+                },
+                {
+                    "name": "over18",
+                    "type": "bool",
+                    "index": false
+                }
+            ]
+        }
+    ],
+    "errors": [
+        {
+            "code": 6000,
+            "name": "VerificationStillValid",
+            "msg": "Verification is still valid."
+        }
+    ]
+}

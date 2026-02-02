@@ -1,0 +1,29 @@
+{
+    "name": "@talkchain/solana-age-registry",
+    "version": "0.2.1",
+    "description": "On-chain registry for Solana Age Verify. Anchors privacy-preserving face hashes to the Solana blockchain.",
+    "keywords": [
+        "solana",
+        "anchor",
+        "identity",
+        "age-verification",
+        "blockchain-registry"
+    ],
+    "main": "client.ts",
+    "scripts": {
+        "test": "anchor test"
+    },
+    "dependencies": {
+        "@coral-xyz/anchor": "^0.31.1",
+        "@solana/web3.js": "^1.75.0"
+    },
+    "devDependencies": {
+        "@coral-xyz/anchor-cli": "^0.31.2",
+        "@types/chai": "^4.3.20",
+        "@types/mocha": "^10.0.10",
+        "chai": "^4.3.0",
+        "mocha": "^10.0.0",
+        "ts-mocha": "^10.0.0",
+        "typescript": "^5.0.0"
+    }
+}

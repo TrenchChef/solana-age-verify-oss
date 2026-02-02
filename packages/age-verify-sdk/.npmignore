@@ -1,0 +1,60 @@
+# Environment & Secrets (CRITICAL)
+.env
+.env.*
+*.env
+keys/
+wallet/
+secrets/
+.SECRET_VAULT.md
+*.pem
+*.key
+id.json
+deployment.json
+**/*.json
+!package.json
+!tsconfig.json
+!Anchor.toml
+
+# Internal / Brain Data
+.gemini/
+.agent/
+brain/
+docs/archive/
+docs/IMMEDIATE_ACTION_PLAN.md
+
+# Source and Build Config (Ship only dist/)
+src/
+tsconfig.json
+tsconfig.*.json
+*.tsbuildinfo
+backup/
+
+# Dependencies & Logs
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Tests & Scripts
+tests/
+__tests__/
+scripts/
+jest.config.*
+
+# Documentation
+docs/
+*.md
+!README.md
+!LICENSE
+!CHANGELOG.md
+
+# System
+.DS_Store
+Thumbs.db
